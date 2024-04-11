@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import CommonContainer from "../layout/CommonContainer";
 
-const RootContainer = styled.div`
-  font-size: 2rem;
+const RootList = styled.ul`
+  width: fit-content;
 `;
 
 const Root = () => {
@@ -11,13 +12,15 @@ const Root = () => {
     navigate("/gsap/");
   };
   return (
-    <RootContainer>
-      <ul>
+    <CommonContainer>
+      <RootList>
         <li>
-          <button onClick={handleClickEvent}>gsap</button>
+          <button className="button-default" onClick={handleClickEvent}>
+            gsap
+          </button>
         </li>
-      </ul>
-    </RootContainer>
+      </RootList>
+    </CommonContainer>
   );
 };
 

@@ -5,12 +5,19 @@ import Root from "./components/page";
 import Gsap from "./components/Gsap";
 import GsapScroll from "./components/Gsap/Scroll";
 import Header from "./components/layout/Header";
+import { styled } from "styled-components";
 import GsapScrollHorizontal from "./components/Gsap/Scroll/Horizontal";
+
+const AppContainer = styled.main`
+  width: 100dvw;
+  background-color: #242424;
+  color: rgba(255, 255, 255, 0.87);
+`;
 
 function App() {
   return (
     <>
-      <main>
+      <AppContainer>
         <BrowserRouter>
           <Header />
           <Routes>
@@ -23,7 +30,7 @@ function App() {
             />
           </Routes>
         </BrowserRouter>
-      </main>
+      </AppContainer>
     </>
   );
 }

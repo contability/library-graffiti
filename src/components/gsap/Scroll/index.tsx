@@ -4,23 +4,19 @@ import { styled } from "styled-components";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setRandomColor } from "../../../libs/utils";
 import { useNavigate } from "react-router-dom";
+import CommonContainer from "../../layout/CommonContainer";
 gsap.registerPlugin(ScrollTrigger);
 
 const GsapScrollContainer = styled.div`
-  margin: 0 auto;
-  max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  scroll-behavior: smooth;
   overflow-x: hidden;
 
-  .div-space {
+  .section-space {
     font-size: 10rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0 2rem;
     height: 100dvh;
 
     p {
@@ -28,22 +24,28 @@ const GsapScrollContainer = styled.div`
     }
   }
 
-  .box-list {
-    width: 100vw;
-    display: flex;
-    gap: 2rem;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 400px;
+  .section-list {
+    height: 100dvh;
 
-    .box {
-      text-align: center;
-      position: relative;
-      left: -200px;
-      button {
-        font-size: 3rem;
-        padding: 3rem;
+    .box-list {
+      width: 100vw;
+      display: flex;
+      gap: 2rem;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 400px;
+
+      .box {
+        text-align: center;
+        position: relative;
+        left: -200px;
+        border-radius: 0.8rem;
+
+        button {
+          font-size: 3rem;
+          padding: 3rem;
+        }
       }
     }
   }
@@ -77,51 +79,55 @@ const GsapScroll = () => {
   };
 
   return (
-    <GsapScrollContainer>
-      <div className="div-space">
-        <h3>GSAP - SCROLL</h3>
-        <p>SCROLL DOWN</p>
-      </div>
-      <ul className="box-list">
-        <li
-          style={{ backgroundColor: setRandomColor() }}
-          ref={addToRefs}
-          className="box"
-        >
-          <button onClick={() => navigate("/gsap/scroll/horizontal")}>
-            horizontal
-          </button>
-        </li>
-        <li
-          style={{ backgroundColor: setRandomColor() }}
-          ref={addToRefs}
-          className="box"
-        >
-          <button>box2</button>
-        </li>
-        <li
-          style={{ backgroundColor: setRandomColor() }}
-          ref={addToRefs}
-          className="box"
-        >
-          <button>box3</button>
-        </li>
-        <li
-          style={{ backgroundColor: setRandomColor() }}
-          ref={addToRefs}
-          className="box"
-        >
-          <button>box4</button>
-        </li>
-        <li
-          style={{ backgroundColor: setRandomColor() }}
-          ref={addToRefs}
-          className="box"
-        >
-          <button>box5</button>
-        </li>
-      </ul>
-    </GsapScrollContainer>
+    <CommonContainer>
+      <GsapScrollContainer>
+        <section className="section-space">
+          <h3>GSAP - SCROLL</h3>
+          <p>SCROLL DOWN</p>
+        </section>
+        <section className="section-list">
+          <ul className="box-list">
+            <li
+              style={{ backgroundColor: setRandomColor() }}
+              ref={addToRefs}
+              className="box"
+            >
+              <button onClick={() => navigate("/gsap/scroll/horizontal")}>
+                horizontal
+              </button>
+            </li>
+            <li
+              style={{ backgroundColor: setRandomColor() }}
+              ref={addToRefs}
+              className="box"
+            >
+              <button>box2</button>
+            </li>
+            <li
+              style={{ backgroundColor: setRandomColor() }}
+              ref={addToRefs}
+              className="box"
+            >
+              <button>box3</button>
+            </li>
+            <li
+              style={{ backgroundColor: setRandomColor() }}
+              ref={addToRefs}
+              className="box"
+            >
+              <button>box4</button>
+            </li>
+            <li
+              style={{ backgroundColor: setRandomColor() }}
+              ref={addToRefs}
+              className="box"
+            >
+              <button>box5</button>
+            </li>
+          </ul>
+        </section>
+      </GsapScrollContainer>
+    </CommonContainer>
   );
 };
 
