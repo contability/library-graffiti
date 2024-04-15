@@ -101,28 +101,9 @@ const GsapScroll = () => {
               ref={addToRefs}
               className="box"
             >
-              <button>box2</button>
-            </li>
-            <li
-              style={{ backgroundColor: setRandomColor() }}
-              ref={addToRefs}
-              className="box"
-            >
-              <button>box3</button>
-            </li>
-            <li
-              style={{ backgroundColor: setRandomColor() }}
-              ref={addToRefs}
-              className="box"
-            >
-              <button>box4</button>
-            </li>
-            <li
-              style={{ backgroundColor: setRandomColor() }}
-              ref={addToRefs}
-              className="box"
-            >
-              <button>box5</button>
+              <button onClick={() => navigate("/gsap/scroll/scale/one")}>
+                scale v1
+              </button>
             </li>
           </ul>
         </section>
