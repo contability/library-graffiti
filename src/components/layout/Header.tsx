@@ -5,6 +5,7 @@ const HeaderContainer = styled.header`
   position: fixed;
   top: 0;
   padding: 2rem;
+  z-index: 99;
 
   button {
     font-size: 3rem;
