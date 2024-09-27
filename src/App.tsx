@@ -11,6 +11,8 @@ import GsapScrollScaleOne from "./components/gsap/Scroll/Scale/One";
 import Framer from "./components/framer";
 import PageTransition from "./components/framer/page-transition";
 import Chart from "./components/chartjs";
+import ChartRadar from "./components/chartjs/radar";
+import ChartBar from "./components/chartjs/bar";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -42,6 +44,8 @@ function App() {
               element={<PageTransition />}
             />
             <Route path="/chartjs" element={<Chart />} />
+            <Route path="/chartjs/bar" element={<ChartBar />} />
+            <Route path="/chartjs/radar" element={<ChartRadar />} />
           </Routes>
         </BrowserRouter>
       </AppContainer>

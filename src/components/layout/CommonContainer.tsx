@@ -11,6 +11,7 @@ const CommonContainer = styled.div`
   flex-direction: column;
   place-items: center;
   scroll-behavior: smooth;
+  padding: 2rem;
 
   h1 {
     font-size: 10rem;
