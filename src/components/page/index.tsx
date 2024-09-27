@@ -7,6 +7,7 @@ const RootList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 4rem;
+  padding: 2rem;
 `;
 
 const Root = () => {
@@ -26,6 +27,14 @@ const Root = () => {
             onClick={() => navigate("/framer")}
           >
             framer
+          </button>
+        </li>
+        <li>
+          <button
+            className="button-default"
+            onClick={() => navigate("/chartjs")}
+          >
+            chart.js
           </button>
         </li>
       </RootList>

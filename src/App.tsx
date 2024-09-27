@@ -10,6 +10,7 @@ import GsapScrollHorizontal from "./components/gsap/Scroll/Horizontal";
 import GsapScrollScaleOne from "./components/gsap/Scroll/Scale/One";
 import Framer from "./components/framer";
 import PageTransition from "./components/framer/page-transition";
+import Chart from "./components/chartjs";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -40,6 +41,7 @@ function App() {
               path="/framer/page-transition"
               element={<PageTransition />}
             />
+            <Route path="/chartjs" element={<Chart />} />
           </Routes>
         </BrowserRouter>
       </AppContainer>
