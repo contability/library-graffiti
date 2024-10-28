@@ -13,6 +13,9 @@ import PageTransition from "./components/framer/page-transition";
 import Chart from "./components/chartjs";
 import ChartRadar from "./components/chartjs/radar";
 import ChartBar from "./components/chartjs/bar";
+import FullPage from "./components/fullpage";
+import DefaultFullPage from "./components/fullpage/default";
+import CustomWrapperFullPage from "./components/fullpage/custom-wrapper";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -46,6 +49,12 @@ function App() {
             <Route path="/chartjs" element={<Chart />} />
             <Route path="/chartjs/bar" element={<ChartBar />} />
             <Route path="/chartjs/radar" element={<ChartRadar />} />
+            <Route path="/fullpage/" element={<FullPage />} />
+            <Route path="/fullpage/default" element={<DefaultFullPage />} />
+            <Route
+              path="/fullpage/custom-wrapper"
+              element={<CustomWrapperFullPage />}
+            />
           </Routes>
         </BrowserRouter>
       </AppContainer>

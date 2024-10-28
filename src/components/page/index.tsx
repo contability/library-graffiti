@@ -34,7 +34,15 @@ const Root = () => {
             className="button-default"
             onClick={() => navigate("/chartjs")}
           >
-            chart.js
+            react-chartjs-2
+          </button>
+        </li>
+        <li>
+          <button
+            className="button-default"
+            onClick={() => navigate("/fullpage")}
+          >
+            react-fullpage
           </button>
         </li>
       </RootList>
