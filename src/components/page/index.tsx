@@ -45,6 +45,11 @@ const Root = () => {
             react-fullpage
           </button>
         </li>
+        <li>
+          <button className="button-default" onClick={() => navigate("/lenis")}>
+            lenis
+          </button>
+        </li>
       </RootList>
     </CommonContainer>
   );

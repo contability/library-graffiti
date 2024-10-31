@@ -16,6 +16,8 @@ import ChartBar from "./components/chartjs/bar";
 import FullPage from "./components/fullpage";
 import DefaultFullPage from "./components/fullpage/default";
 import CustomWrapperFullPage from "./components/fullpage/custom-wrapper";
+import LenisPage from "./components/lenis";
+import LenisDefault from "./components/lenis/default";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -31,6 +33,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Root />} />
+
             <Route path="/gsap/" element={<Gsap />} />
             <Route path="/gsap/scroll" element={<GsapScroll />} />
             <Route
@@ -41,20 +44,26 @@ function App() {
               path="/gsap/scroll/scale/one"
               element={<GsapScrollScaleOne />}
             />
+
             <Route path="/framer" element={<Framer />} />
             <Route
               path="/framer/page-transition"
               element={<PageTransition />}
             />
+
             <Route path="/chartjs" element={<Chart />} />
             <Route path="/chartjs/bar" element={<ChartBar />} />
             <Route path="/chartjs/radar" element={<ChartRadar />} />
+
             <Route path="/fullpage/" element={<FullPage />} />
             <Route path="/fullpage/default" element={<DefaultFullPage />} />
             <Route
               path="/fullpage/custom-wrapper"
               element={<CustomWrapperFullPage />}
             />
+
+            <Route path="/lenis" element={<LenisPage />} />
+            <Route path="/lenis/default" element={<LenisDefault />} />
           </Routes>
         </BrowserRouter>
       </AppContainer>
