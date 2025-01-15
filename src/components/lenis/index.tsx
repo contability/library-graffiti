@@ -35,6 +35,14 @@ const LenisPage = () => {
           <li>
             <button
               className="button-default"
+              onClick={() => navigate("/lenis/scroll-to")}
+            >
+              scroll to
+            </button>
+          </li>
+          <li>
+            <button
+              className="button-default"
               onClick={() =>
                 window.open(
                   "https://github.com/darkroomengineering/lenis#readme",

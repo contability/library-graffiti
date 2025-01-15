@@ -17,7 +17,8 @@ import FullPage from "./components/fullpage";
 import DefaultFullPage from "./components/fullpage/default";
 import CustomWrapperFullPage from "./components/fullpage/custom-wrapper";
 import LenisPage from "./components/lenis";
-import LenisDefault from "./components/lenis/default";
+import LenisDefault from "./components/lenis/Default";
+import LenisScrollTo from "./components/lenis/ScrollTo";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -64,6 +65,7 @@ function App() {
 
             <Route path="/lenis" element={<LenisPage />} />
             <Route path="/lenis/default" element={<LenisDefault />} />
+            <Route path="/lenis/scroll-to" element={<LenisScrollTo />} />
           </Routes>
         </BrowserRouter>
       </AppContainer>
