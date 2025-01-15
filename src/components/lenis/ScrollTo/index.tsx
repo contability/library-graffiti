@@ -12,8 +12,8 @@ const LenisScrollTo = () => {
   return (
     <CommonContainer>
       <LenisScrollToWrapper>
-        <ScrollToSectionButton targetId="section3">
-          Scroll to Section 2 Button
+        <ScrollToSectionButton targetId="section4">
+          Scroll to Section 4 Button
         </ScrollToSectionButton>
         <section id="section1">Section1</section>
         <section id="section2">Section2</section>
