@@ -1,4 +1,4 @@
-import { ReactNode, memo } from "react";
+import { PropsWithChildren, memo } from "react";
 import { styled } from "styled-components";
 
 const CommonContainer = styled.div`
@@ -11,6 +11,7 @@ const CommonContainer = styled.div`
   flex-direction: column;
   place-items: center;
   scroll-behavior: smooth;
+  padding: 2rem;
 
   h1 {
     font-size: 10rem;
@@ -30,7 +31,7 @@ const CommonContainer = styled.div`
   }
 `;
 
-const CommonContainerLayout = ({ children }: { children: ReactNode }) => {
+const CommonContainerLayout = ({ children }: PropsWithChildren) => {
   return <CommonContainer>{children}</CommonContainer>;
 };
 
