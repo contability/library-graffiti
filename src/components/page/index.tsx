@@ -50,6 +50,14 @@ const Root = () => {
             lenis
           </button>
         </li>
+        <li>
+          <button
+            className="button-default"
+            onClick={() => navigate("/address")}
+          >
+            address
+          </button>
+        </li>
       </RootList>
     </CommonContainer>
   );

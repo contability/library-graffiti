@@ -19,6 +19,9 @@ import CustomWrapperFullPage from "./components/fullpage/custom-wrapper";
 import LenisPage from "./components/lenis";
 import LenisDefault from "./components/lenis/Default";
 import LenisScrollTo from "./components/lenis/ScrollTo";
+import AddressPage from "./components/address";
+import AddressDaumPostcodeEmbed from "./components/address/daum-postcode/embed";
+import AddressDaumPostcodePopup from "./components/address/daum-postcode/popup";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -66,6 +69,16 @@ function App() {
             <Route path="/lenis" element={<LenisPage />} />
             <Route path="/lenis/default" element={<LenisDefault />} />
             <Route path="/lenis/scroll-to" element={<LenisScrollTo />} />
+
+            <Route path="/address" element={<AddressPage />} />
+            <Route
+              path="/address/daum-postcode/embed"
+              element={<AddressDaumPostcodeEmbed />}
+            />
+            <Route
+              path="/address/daum-postcode/popup"
+              element={<AddressDaumPostcodePopup />}
+            />
           </Routes>
         </BrowserRouter>
       </AppContainer>
