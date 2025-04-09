@@ -1,5 +1,6 @@
 import "./styles/reset.css";
 import "./styles/global.css";
+import "./styles/embla-carousel.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Root from "./components/page";
 import Header from "./components/layout/Header";
@@ -22,6 +23,8 @@ import LenisScrollTo from "./components/lenis/ScrollTo";
 import AddressPage from "./components/address";
 import AddressDaumPostcodeEmbed from "./components/address/daum-postcode/embed";
 import AddressDaumPostcodePopup from "./components/address/daum-postcode/popup";
+import EmblaCarouselParallex from "./components/embla-carousel/parallex/parallex";
+import EmblaCarouselPage from "./components/embla-carousel";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -78,6 +81,11 @@ function App() {
             <Route
               path="/address/daum-postcode/popup"
               element={<AddressDaumPostcodePopup />}
+            />
+            <Route path="/embla-carousel" element={<EmblaCarouselPage />} />
+            <Route
+              path="/embla-carousel/parallex"
+              element={<EmblaCarouselParallex />}
             />
           </Routes>
         </BrowserRouter>

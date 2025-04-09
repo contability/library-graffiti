@@ -58,6 +58,14 @@ const Root = () => {
             address
           </button>
         </li>
+        <li>
+          <button
+            className="button-default"
+            onClick={() => navigate("/embla-carousel")}
+          >
+            embla-carousel
+          </button>
+        </li>
       </RootList>
     </CommonContainer>
   );
