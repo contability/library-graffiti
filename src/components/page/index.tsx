@@ -66,6 +66,11 @@ const Root = () => {
             embla-carousel
           </button>
         </li>
+        <li>
+          <button className="button-default" onClick={() => navigate("/img")}>
+            image
+          </button>
+        </li>
       </RootList>
     </CommonContainer>
   );

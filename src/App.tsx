@@ -25,6 +25,8 @@ import AddressDaumPostcodeEmbed from "./components/address/daum-postcode/embed";
 import AddressDaumPostcodePopup from "./components/address/daum-postcode/popup";
 import EmblaCarouselParallex from "./components/embla-carousel/parallex/parallex";
 import EmblaCarouselPage from "./components/embla-carousel";
+import ImagePage from "./components/img";
+import ImagePinchZoomPage from "./components/img/pinch-zoom";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -87,6 +89,8 @@ function App() {
               path="/embla-carousel/parallex"
               element={<EmblaCarouselParallex />}
             />
+            <Route path="/img" element={<ImagePage />} />
+            <Route path="/img/pinch-zoom" element={<ImagePinchZoomPage />} />
           </Routes>
         </BrowserRouter>
       </AppContainer>
