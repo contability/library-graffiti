@@ -27,6 +27,9 @@ import EmblaCarouselParallex from "./components/embla-carousel/parallex/parallex
 import EmblaCarouselPage from "./components/embla-carousel";
 import ImagePage from "./components/img";
 import ImagePinchZoomPage from "./components/img/pinch-zoom";
+import ExportExcelPage from "./components/export-excel";
+import SheetJsFileSaver from "./components/export-excel/sheetjs-filesaver";
+import ReactQueryClientProvider from "./components/providers/react-query-client-provider";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -36,7 +39,7 @@ const AppContainer = styled.main`
 
 function App() {
   return (
-    <>
+    <ReactQueryClientProvider>
       <AppContainer>
         <BrowserRouter>
           <Header />
@@ -91,10 +94,15 @@ function App() {
             />
             <Route path="/img" element={<ImagePage />} />
             <Route path="/img/pinch-zoom" element={<ImagePinchZoomPage />} />
+            <Route path="/export-excel" element={<ExportExcelPage />} />
+            <Route
+              path="/export-excel/sheetjs-filesaver"
+              element={<SheetJsFileSaver />}
+            />
           </Routes>
         </BrowserRouter>
       </AppContainer>
-    </>
+    </ReactQueryClientProvider>
   );
 }
 

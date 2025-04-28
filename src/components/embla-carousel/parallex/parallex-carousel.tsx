@@ -11,10 +11,10 @@ import Autoplay from "embla-carousel-autoplay";
 import { DotButton } from "../embla-carousel-dot-button";
 import { NextButton, PrevButton } from "../embla-carousel-arrow-buttons";
 import styled from "styled-components";
-import { useAutoplay } from "../../../hooks/embla-carousel/useAutoplay";
-import { useDotButton } from "../../../hooks/embla-carousel/useDotButton";
-import { usePrevNextButtons } from "../../../hooks/embla-carousel/usePrevNextButtons";
-import { useAutoplayProgress } from "../../../hooks/embla-carousel/useAutoplayProgress";
+import { useAutoplay } from "../../../libs/hooks/embla-carousel/useAutoplay";
+import { useDotButton } from "../../../libs/hooks/embla-carousel/useDotButton";
+import { usePrevNextButtons } from "../../../libs/hooks/embla-carousel/usePrevNextButtons";
+import { useAutoplayProgress } from "../../../libs/hooks/embla-carousel/useAutoplayProgress";
 
 // 캐러셀의 기본 옵션 설정
 const CAROUSEL_OPTIONS: EmblaOptionsType = {

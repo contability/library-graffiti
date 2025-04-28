@@ -71,6 +71,14 @@ const Root = () => {
             image
           </button>
         </li>
+        <li>
+          <button
+            className="button-default"
+            onClick={() => navigate("/export-excel")}
+          >
+            export-excel
+          </button>
+        </li>
       </RootList>
     </CommonContainer>
   );

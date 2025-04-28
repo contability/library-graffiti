@@ -1,5 +1,5 @@
 import { PropsWithChildren, useCallback } from "react";
-import useLenis from "../../../hooks/useLenis";
+import useLenis from "../../../libs/hooks/useLenis";
 import styled from "styled-components";
 
 const ScrollToButton = styled.button`

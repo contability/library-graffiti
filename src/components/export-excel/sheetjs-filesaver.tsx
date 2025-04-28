@@ -1,0 +1,54 @@
+import styled from "styled-components";
+import CommonContainer from "../layout/CommonContainer";
+import { usePosts } from "../../libs/hooks/queries/useJsonPlaceholder";
+import useExportExcel from "../../libs/hooks/use-export-excel";
+import { postHeaderAlias } from "../../constants/excel-alias/jasonplaceholder";
+import { Post } from "../../types/api/jsonplaceholder";
+
+const SheetJsFileSaverContainer = styled.article`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  h2 {
+    font-size: 5rem;
+    text-align: center;
+    color: #988c8c;
+    font-weight: 700;
+  }
+
+  ul li {
+    display: flex;
+    gap: 0.8rem;
+    font-size: 2rem;
+
+    b {
+      min-width: 32rem;
+    }
+  }
+`;
+
+const SheetJsFileSaverPage = () => {
+  const { refetch } = usePosts();
+
+  // TODO: isExportExcelLoading, setIsExportExcelLoading도 가져와서 상태 값에 따라 로딩 UI modal 띄워주기
+  const { executeExport } = useExportExcel<Post[]>({
+    fileName: "jsonplaceholder-post",
+    aliasObj: postHeaderAlias,
+    dataFetch: refetch,
+  });
+
+  return (
+    <CommonContainer>
+      <SheetJsFileSaverContainer>
+        <h2>sheetjs + file-saver</h2>
+        <button className="button-default" onClick={executeExport}>
+          excel download
+        </button>
+      </SheetJsFileSaverContainer>
+    </CommonContainer>
+  );
+};
+
+export default SheetJsFileSaverPage;

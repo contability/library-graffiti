@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from "react";
-import useLenis from "../../hooks/useLenis";
+import useLenis from "../../libs/hooks/useLenis";
 
 const SmoothScroll = ({ children }: { children: ReactNode }) => {
   const lenis = useLenis();
