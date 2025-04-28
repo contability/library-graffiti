@@ -10,24 +10,49 @@ export type DataItem = Record<string, unknown>;
 
 /**
  * 엑셀 내보내기 훅 속성
+ * @template TData 내보낼 데이터 타입 (기본값: unknown[])
  */
 export interface ExportExcelProps<TData = unknown[]> {
-  /** 파일 이름. fileName_YYYY-MM-DD_hhmmss로 export */
+  /**
+   * 파일 이름. fileName_YYYY-MM-DD_hhmmss 형식으로 export됨
+   */
   fileName: string;
-  /** 데이터 패치 이벤트 */
+  /**
+   * 데이터 패치 이벤트 함수.
+   * React Query의 refetch 함수와 같은 형태로 데이터를 가져옴
+   */
   dataFetch: (
     options?: RefetchOptions
-  ) => Promise<QueryObserverResult<TData, Error>>;
-  /** 로딩 여부 상태 설정 */
-  // setIsLoading: (isLoading: boolean) => void;
-  /** 컬럼 별칭 오브젝트 */
+  ) => Promise<QueryObserverResult<TData | undefined, Error>>;
+  /**
+   * 컬럼 별칭 객체.
+   * 원본 데이터의 키를 엑셀에 표시할 다른 이름으로 매핑
+   * 예: { userId: '사용자 ID', title: '제목' }
+   */
   aliasObj?: Record<string, string>;
-  /** 상태 값 별칭 오브젝트. 열거형 처럼 숫자 등의 값과 실제 의미를 갖는 객체를 맵핑하려는 의도. */
+  /**
+   * 상태 값 별칭 객체.
+   * 숫자나 코드 값을 의미 있는 텍스트로 변환할 때 사용
+   * 예: { status: { '0': '대기중', '1': '진행중', '2': '완료' } }
+   */
   statusAliasObj?: Record<string, Record<string, string>>;
 }
 
 /**
- * 엑셀 내보내기 훅
+ * 엑셀 내보내기 기능을 제공하는 커스텀 훅
+ *
+ * @template TData 내보낼 데이터의 타입 (배열 형태)
+ * @param {ExportExcelProps<TData>} props 엑셀 내보내기에 필요한 설정
+ * @returns 엑셀 다운로드 실행 함수와 상태값
+ *
+ * @example
+ * ```tsx
+ * const { executeExport, isExportExcelLoading } = useExportExcel<Post[]>({
+ *   fileName: "posts-data",
+ *   aliasObj: { id: "번호", title: "제목", body: "내용" },
+ *   dataFetch: fetchPostsData
+ * });
+ * ```
  */
 const useExportExcel = <TData extends unknown[] = unknown[]>({
   fileName,
@@ -35,8 +60,14 @@ const useExportExcel = <TData extends unknown[] = unknown[]>({
   statusAliasObj,
   dataFetch,
 }: ExportExcelProps<TData>) => {
+  // 엑셀 다운로드 진행 상태를 관리하는 상태값
   const [isExportExcelLoading, setIsExportExcelLoading] = useState(false);
 
+  /**
+   * 데이터의 키 이름을 변환하는 함수
+   *
+   * @param list 변환할 데이터 배열
+   */
   const renameKey = useCallback(
     async (list: TData) => {
       if (!list || list.length === 0) return;
@@ -44,77 +75,103 @@ const useExportExcel = <TData extends unknown[] = unknown[]>({
 
       // 객체 배열에 대해 처리
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await list.map((obj: any) => {
+      for (const obj of list as any[]) {
         const aliasObjKeys = Object.keys(aliasObj);
-        aliasObjKeys.map((key) => {
+        for (const key of aliasObjKeys) {
+          // boolean 값은 문자열로 변환
           let value =
             typeof obj[key] === "boolean" ? JSON.stringify(obj[key]) : obj[key];
+
+          // 상태값 변환 처리
           if (statusAliasObj) {
             const statusFields = Object.keys(statusAliasObj);
-            statusFields.find((statusField) => {
+            for (const statusField of statusFields) {
               if (key === statusField) {
                 value = statusAliasObj[statusField][String(value)];
               }
-            });
+            }
           }
+
+          // 문자열 값 처리
           if (typeof value === "string") value = value.toUpperCase();
           if (typeof value === "string" && key === "walletAddress")
             value = value.trim();
+
+          // 번호 필드 처리
           if (key === "no") value = sequence--;
+
+          // 변환된 키와 값으로 객체 수정
           obj[aliasObj[key]] = value;
           delete obj[key];
-        });
-      });
+        }
+      }
     },
     [aliasObj, statusAliasObj]
   );
 
+  /**
+   * 엑셀 내보내기를 실행하는 함수
+   * 데이터를 가져와서 가공한 후 엑셀 파일로 다운로드
+   */
   const executeExport = useCallback(async () => {
+    // 로딩 상태 시작
     setIsExportExcelLoading(true);
-    const fetchResult = await dataFetch();
 
-    // 데이터 가져오기 성공 확인
-    if (fetchResult.status === "success" && fetchResult.data) {
-      const list = fetchResult.data;
+    try {
+      // 데이터 가져오기
+      const fetchResult = await dataFetch();
 
-      // 다운로드 할 데이터가 없을 때
-      if (!Array.isArray(list) || list.length < 1) {
-        setIsExportExcelLoading(false);
-        return;
+      // 데이터 가져오기 성공 확인
+      if (fetchResult.status === "success" && fetchResult.data) {
+        const list = fetchResult.data;
+
+        // 다운로드할 데이터가 없을 때
+        if (!Array.isArray(list) || list.length < 1) {
+          setIsExportExcelLoading(false);
+          return;
+        }
+
+        // 데이터 키 변환 처리
+        await renameKey(list as TData);
+
+        // 엑셀 파일 타입 설정
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8";
+        const extension = ".xlsx";
+
+        // 현재 시간을 YYYY-MM-DD_HHmmss 형식으로 포맷팅
+        const now = new Date();
+        const dateString = now.toISOString().split("T")[0];
+        const timeString = now.toTimeString().split(" ")[0].replace(/:/g, "");
+        const formattedFileName = `${fileName}_${dateString}_${timeString}`;
+
+        // SheetJS를 사용하여 JSON 데이터를 엑셀 형식으로 변환
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const ws = XLSX.utils.json_to_sheet(list as any[]);
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+
+        // Blob 생성 및 파일 다운로드
+        const data = new Blob([excelBuffer], { type: fileType });
+        await FileSaver.saveAs(data, formattedFileName + extension);
+      } else {
+        // 에러 처리
+        console.error("데이터 가져오기 실패:", fetchResult.error);
       }
-
-      await renameKey(list as TData);
-      const fileType =
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8";
-      const extension = ".xlsx";
-
-      // 현재 시간을 YYYY-MM-DD_HHmmss 형식으로 포맷팅
-      const now = new Date();
-      const dateString = now.toISOString().split("T")[0];
-      const timeString = now.toTimeString().split(" ")[0].replace(/:/g, "");
-      const formattedFileName = `${fileName}_${dateString}_${timeString}`;
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const ws = XLSX.utils.json_to_sheet(list as any[]);
-      const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-      const data = new Blob([excelBuffer], { type: fileType });
-
-      await FileSaver.saveAs(data, formattedFileName + extension);
-    } else {
-      // 에러 처리
-      console.error("데이터 가져오기 실패:", fetchResult.error);
+    } catch (error) {
+      console.error("엑셀 내보내기 중 오류 발생:", error);
+    } finally {
+      // 작업 완료 후 로딩 상태 종료
+      setIsExportExcelLoading(false);
     }
-
-    setIsExportExcelLoading(false);
   }, [dataFetch, renameKey, fileName]);
 
   return {
-    /** 외부에서 로딩 모달을 띄워주기 위한 state 값 */
+    /** 엑셀 내보내기 로딩 상태 */
     isExportExcelLoading,
-    /** excel export 실행 함수 */
+    /** 엑셀 내보내기 실행 함수 */
     executeExport,
-    /** 외부에서 로딩 모달을 조작하기 위한 state 조작 함수 */
+    /** 외부에서 로딩 상태를 조작하기 위한 함수 */
     setIsExportExcelLoading,
   };
 };
