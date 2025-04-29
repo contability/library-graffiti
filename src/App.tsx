@@ -30,6 +30,7 @@ import ImagePinchZoomPage from "./components/img/pinch-zoom";
 import ExportExcelPage from "./components/export-excel";
 import ReactQueryClientProvider from "./components/providers/react-query-client-provider";
 import XlsxJsStyleFileSaverPage from "./components/export-excel/xlsxjsstyle-filesaver";
+import ExcelJsFileSaverPage from "./components/export-excel/exceljs-filesaver";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -98,6 +99,10 @@ function App() {
             <Route
               path="/export-excel/xlsxjsstyle-filesaver"
               element={<XlsxJsStyleFileSaverPage />}
+            />
+            <Route
+              path="/export-excel/exceljs-filesaver"
+              element={<ExcelJsFileSaverPage />}
             />
           </Routes>
         </BrowserRouter>

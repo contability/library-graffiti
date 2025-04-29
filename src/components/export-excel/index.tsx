@@ -31,6 +31,14 @@ const ExportExcelPage = () => {
               xlsx-js-style + file-saver
             </button>
           </li>
+          <li>
+            <button
+              className="button-default"
+              onClick={() => navigate("/export-excel/exceljs-filesaver")}
+            >
+              exceljs + file-saver
+            </button>
+          </li>
         </ul>
       </ExportExcelContainer>
     </CommonContainer>

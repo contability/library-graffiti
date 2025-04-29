@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CommonContainer from "../layout/CommonContainer";
 import { usePosts } from "../../libs/hooks/queries/useJsonPlaceholder";
-import useXlsxJsStyle from "../../libs/hooks/use-xlsx-js-style";
+import useXlsxJsStyle from "../../libs/hooks/export-excel/use-xlsx-js-style";
 import { postHeaderAlias } from "../../constants/excel-alias/jasonplaceholder";
 import { Post } from "../../types/api/jsonplaceholder";
 
