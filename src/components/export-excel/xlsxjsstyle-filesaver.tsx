@@ -5,7 +5,7 @@ import useExportExcel from "../../libs/hooks/use-export-excel";
 import { postHeaderAlias } from "../../constants/excel-alias/jasonplaceholder";
 import { Post } from "../../types/api/jsonplaceholder";
 
-const SheetJsFileSaverContainer = styled.article`
+const XlsxJsStyleFileSaverContainer = styled.article`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -29,7 +29,7 @@ const SheetJsFileSaverContainer = styled.article`
   }
 `;
 
-const SheetJsFileSaverPage = () => {
+const XlsxJsStyleFileSaverPage = () => {
   const { refetch } = usePosts();
 
   // TODO: isExportExcelLoading, setIsExportExcelLoading도 가져와서 상태 값에 따라 로딩 UI modal 띄워주기
@@ -41,14 +41,14 @@ const SheetJsFileSaverPage = () => {
 
   return (
     <CommonContainer>
-      <SheetJsFileSaverContainer>
-        <h2>sheetjs + file-saver</h2>
+      <XlsxJsStyleFileSaverContainer>
+        <h2>xlsx-js-style + file-saver</h2>
         <button className="button-default" onClick={executeExport}>
           excel download
         </button>
-      </SheetJsFileSaverContainer>
+      </XlsxJsStyleFileSaverContainer>
     </CommonContainer>
   );
 };
 
-export default SheetJsFileSaverPage;
+export default XlsxJsStyleFileSaverPage;

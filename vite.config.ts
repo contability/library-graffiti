@@ -17,10 +17,6 @@ export default defineConfig({
         __dirname,
         "node_modules/file-saver/dist/FileSaver.min.js"
       ),
-      "sheetjs-style": path.resolve(
-        __dirname,
-        "node_modules/sheetjs-style/dist/xlsx.full.min.js"
-      ),
     },
   },
 });

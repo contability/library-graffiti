@@ -26,9 +26,9 @@ const ExportExcelPage = () => {
           <li>
             <button
               className="button-default"
-              onClick={() => navigate("/export-excel/sheetjs-filesaver")}
+              onClick={() => navigate("/export-excel/xlsxjsstyle-filesaver")}
             >
-              sheetjs + file-saver
+              xlsx-js-style + file-saver
             </button>
           </li>
         </ul>

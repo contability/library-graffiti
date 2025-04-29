@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+- dependency installations must use Yarn. Example: yarn add <package>.
+- Libraries used only in the development environment must be added to devDependencies.

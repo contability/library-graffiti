@@ -28,8 +28,8 @@ import EmblaCarouselPage from "./components/embla-carousel";
 import ImagePage from "./components/img";
 import ImagePinchZoomPage from "./components/img/pinch-zoom";
 import ExportExcelPage from "./components/export-excel";
-import SheetJsFileSaver from "./components/export-excel/sheetjs-filesaver";
 import ReactQueryClientProvider from "./components/providers/react-query-client-provider";
+import XlsxJsStyleFileSaverPage from "./components/export-excel/xlsxjsstyle-filesaver";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -96,8 +96,8 @@ function App() {
             <Route path="/img/pinch-zoom" element={<ImagePinchZoomPage />} />
             <Route path="/export-excel" element={<ExportExcelPage />} />
             <Route
-              path="/export-excel/sheetjs-filesaver"
-              element={<SheetJsFileSaver />}
+              path="/export-excel/xlsxjsstyle-filesaver"
+              element={<XlsxJsStyleFileSaverPage />}
             />
           </Routes>
         </BrowserRouter>
