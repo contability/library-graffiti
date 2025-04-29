@@ -13,7 +13,7 @@ export type DataItem = Record<string, unknown>;
  * 엑셀 내보내기 훅 속성
  * @template TData 내보낼 데이터 타입 (기본값: unknown[])
  */
-export interface ExportExcelProps<TData = unknown[]> {
+export interface XlsxJsStyleProps<TData = unknown[]> {
   /**
    * 파일 이름. fileName_YYYY-MM-DD_hhmmss 형식으로 export됨
    */
@@ -43,24 +43,24 @@ export interface ExportExcelProps<TData = unknown[]> {
  * 엑셀 내보내기 기능을 제공하는 커스텀 훅
  *
  * @template TData 내보낼 데이터의 타입 (배열 형태)
- * @param {ExportExcelProps<TData>} props 엑셀 내보내기에 필요한 설정
+ * @param {XlsxJsStyleProps<TData>} props 엑셀 내보내기에 필요한 설정
  * @returns 엑셀 다운로드 실행 함수와 상태값
  *
  * @example
  * ```tsx
- * const { executeExport, isExportExcelLoading } = useExportExcel<Post[]>({
+ * const { executeExport, isExportExcelLoading } = useXlsxJsStyle<Post[]>({
  *   fileName: "posts-data",
  *   aliasObj: { id: "번호", title: "제목", body: "내용" },
  *   dataFetch: fetchPostsData
  * });
  * ```
  */
-const useExportExcel = <TData extends unknown[] = unknown[]>({
+const useXlsxJsStyle = <TData extends unknown[] = unknown[]>({
   fileName,
   aliasObj = {},
   statusAliasObj,
   dataFetch,
-}: ExportExcelProps<TData>) => {
+}: XlsxJsStyleProps<TData>) => {
   // 엑셀 다운로드 진행 상태를 관리하는 상태값
   const [isExportExcelLoading, setIsExportExcelLoading] = useState(false);
 
@@ -260,4 +260,4 @@ const useExportExcel = <TData extends unknown[] = unknown[]>({
   };
 };
 
-export default useExportExcel;
+export default useXlsxJsStyle;
