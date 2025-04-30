@@ -35,14 +35,19 @@ const ExcelJsFileSaverContainer = styled.article`
   }
 `;
 
+// 시바견 이미지 URL
+const SHIBA_INU_IMAGE_URL =
+  "https://raw.githubusercontent.com/contability/assets-hub/main/images/shiba_inu.webp";
+
 const ExcelJsFileSaverPage = () => {
   const { refetch } = usePosts();
 
-  // TODO: 이미지 삽입도 해보기
+  // 이미지가 포함된 엑셀 다운로드
   const { executeExport, isExportExcelLoading } = useExceljs<Post[]>({
     fileName: "jsonplaceholder-post",
     aliasObj: postHeaderAlias,
     dataFetch: refetch,
+    sampleImageUrl: SHIBA_INU_IMAGE_URL, // 시바견 이미지 URL 전달
   });
 
   return (
@@ -62,7 +67,9 @@ const ExcelJsFileSaverPage = () => {
           onClick={executeExport}
           disabled={isExportExcelLoading}
         >
-          {isExportExcelLoading ? "로딩 중..." : "excel download"}
+          {isExportExcelLoading
+            ? "로딩 중..."
+            : "이미지가 포함된 Excel 다운로드"}
         </button>
       </ExcelJsFileSaverContainer>
     </CommonContainer>

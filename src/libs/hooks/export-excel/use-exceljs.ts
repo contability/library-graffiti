@@ -1,7 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import * as FileSaver from "file-saver";
 import { useCallback, useState } from "react";
 import ExcelJS from "exceljs";
+
+// 기본 시바견 이미지 URL
+const SHIBA_INU_IMAGE_URL =
+  "https://raw.githubusercontent.com/contability/assets-hub/main/images/shiba_inu.webp";
+
+// 이미지 URL을 스키마 없이 정규화하는 함수
+function normalizeImageUrl(url: string): string {
+  // GitHub 원시 이미지 URL 처리
+  if (url.includes("raw.githubusercontent.com")) {
+    return url;
+  }
+
+  // 이미지 URL이 상대 경로인 경우 절대 경로로 변환
+  if (url.startsWith("/") && !url.startsWith("//")) {
+    return `${window.location.origin}${url}`;
+  }
+
+  return url;
+}
 
 /**
  * 기본 데이터 항목 타입 - 모든 객체는 이것으로 취급
@@ -36,6 +56,11 @@ export interface ExcelJsProps<TData = unknown[]> {
    * 예: { status: { '0': '대기중', '1': '진행중', '2': '완료' } }
    */
   statusAliasObj?: Record<string, Record<string, string>>;
+  /**
+   * 샘플 이미지 URL (선택사항)
+   * 첫 번째 시트 하단에 이미지를 추가
+   */
+  sampleImageUrl?: string;
 }
 
 /**
@@ -59,6 +84,7 @@ const useExceljs = <TData extends unknown[] = unknown[]>({
   aliasObj = {},
   statusAliasObj,
   dataFetch,
+  sampleImageUrl,
 }: ExcelJsProps<TData>) => {
   // 엑셀 다운로드 진행 상태를 관리하는 상태값
   const [isExportExcelLoading, setIsExportExcelLoading] = useState(false);
@@ -121,6 +147,48 @@ const useExceljs = <TData extends unknown[] = unknown[]>({
   );
 
   /**
+   * 이미지를 ArrayBuffer로 가져오는 함수
+   */
+  const fetchImageAsArrayBuffer = useCallback(
+    async (
+      imageUrl: string
+    ): Promise<{ buffer: ArrayBuffer; type: string } | null> => {
+      try {
+        const normalizedUrl = normalizeImageUrl(imageUrl);
+        console.log("이미지 URL 가져오기 시도:", normalizedUrl);
+
+        const response = await fetch(normalizedUrl, {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+        });
+
+        if (!response.ok) {
+          throw new Error(`이미지 로딩 실패: ${response.status}`);
+        }
+
+        const arrayBuffer = await response.arrayBuffer();
+        const contentType =
+          response.headers.get("content-type") || "image/jpeg";
+
+        console.log("이미지 다운로드 성공:", {
+          size: arrayBuffer.byteLength,
+          type: contentType,
+        });
+
+        return {
+          buffer: arrayBuffer,
+          type: contentType,
+        };
+      } catch (error) {
+        console.error("이미지 가져오기 실패:", error);
+        return null;
+      }
+    },
+    []
+  );
+
+  /**
    * 엑셀 내보내기를 실행하는 함수
    * 데이터를 가져와서 가공한 후 엑셀 파일로 다운로드
    */
@@ -129,6 +197,29 @@ const useExceljs = <TData extends unknown[] = unknown[]>({
     setIsExportExcelLoading(true);
 
     try {
+      // 시바견 이미지 다운로드 (모든 행에서 사용할 같은 이미지)
+      const targetImageUrl = sampleImageUrl || SHIBA_INU_IMAGE_URL;
+      console.log("시바견 이미지 다운로드 시작:", targetImageUrl);
+
+      const imageData = await fetchImageAsArrayBuffer(targetImageUrl);
+      if (!imageData) {
+        console.error("이미지 다운로드 실패");
+        setIsExportExcelLoading(false);
+        return;
+      }
+
+      // 이미지 확장자 파악
+      const mimeToExt: Record<string, "jpeg" | "png" | "gif"> = {
+        "image/jpeg": "jpeg",
+        "image/jpg": "jpeg",
+        "image/png": "png",
+        "image/gif": "gif",
+        "image/webp": "jpeg", // webp는 jpeg로 대체
+      };
+
+      const type = imageData.type.split(";")[0];
+      const extension = mimeToExt[type] || "jpeg";
+
       // 데이터 가져오기
       const fetchResult = await dataFetch();
 
@@ -165,15 +256,24 @@ const useExceljs = <TData extends unknown[] = unknown[]>({
         // 헤더 정보 가져오기
         const headers = Object.keys(transformedData[0] || {});
 
+        // 이미지 열 헤더 추가
+        headers.push("이미지");
+
         // 컬럼 설정
-        worksheet.columns = headers.map((header) => ({
-          header,
-          key: header,
-          width: 20,
-        }));
+        worksheet.columns = headers.map((header, index) => {
+          // 마지막 열(이미지 열)은 더 넓게 설정
+          const width = index === headers.length - 1 ? 30 : 20;
+          return {
+            header,
+            key: header,
+            width,
+          };
+        });
 
         // 헤더 행 스타일 설정
         const headerRow = worksheet.getRow(1);
+        headerRow.height = 30; // 헤더 행 높이 설정
+
         headerRow.eachCell((cell) => {
           cell.fill = {
             type: "pattern",
@@ -198,9 +298,20 @@ const useExceljs = <TData extends unknown[] = unknown[]>({
           };
         });
 
+        // 헤더 다음 행부터는 데이터와 이미지 추가
+        const imageId = workbook.addImage({
+          buffer: imageData.buffer,
+          extension,
+        });
+
         // 데이터 추가
         transformedData.forEach((item, index) => {
-          const row = worksheet.addRow(item);
+          // 데이터 행 추가 (이미지 열은 비워둠)
+          const row = worksheet.addRow(Object.values(item));
+          row.height = 80; // 이미지가 들어갈 행 높이 설정
+
+          // 마지막 셀 (이미지 열) 인덱스
+          const lastCellIndex = headers.length;
 
           // 행 스타일 설정 (홀수/짝수 행 구분)
           const isOdd = (index + 1) % 2 !== 0;
@@ -233,15 +344,38 @@ const useExceljs = <TData extends unknown[] = unknown[]>({
               };
             }
           });
+
+          // 이미지 셀과 그 다음 셀 병합 (가로 2개 셀 병합)
+          worksheet.mergeCells(
+            row.number, // 현재 행 번호
+            lastCellIndex, // 이미지 열 (마지막 열)
+            row.number, // 현재 행 번호
+            lastCellIndex + 1 // 마지막 열 + 1 (병합할 열)
+          );
+
+          // 이미지 추가 (행의 마지막 셀에 이미지 추가)
+          try {
+            // 이미지를 현재 행의 마지막 병합된 셀에 추가
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            worksheet.addImage(imageId, {
+              tl: { col: lastCellIndex - 1, row: row.number - 1 },
+              br: { col: lastCellIndex + 1, row: row.number },
+              editAs: "oneCell",
+            } as any);
+          } catch (imageError) {
+            console.error(`${index + 1}번째 행 이미지 추가 실패:`, imageError);
+          }
         });
 
         // 엑셀 파일로 내보내기
+        console.log("엑셀 파일 생성 시작");
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], {
           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
 
         FileSaver.saveAs(blob, `${formattedFileName}.xlsx`);
+        console.log("엑셀 파일 다운로드 완료");
       } else {
         console.error("데이터 가져오기 실패:", fetchResult.error);
       }
@@ -250,7 +384,7 @@ const useExceljs = <TData extends unknown[] = unknown[]>({
     } finally {
       setIsExportExcelLoading(false);
     }
-  }, [dataFetch, renameKey, fileName]);
+  }, [dataFetch, fileName, renameKey, fetchImageAsArrayBuffer, sampleImageUrl]);
 
   return {
     /** 엑셀 내보내기 로딩 상태 */
