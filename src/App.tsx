@@ -31,6 +31,8 @@ import ExportExcelPage from "./components/export-excel";
 import ReactQueryClientProvider from "./components/providers/react-query-client-provider";
 import XlsxJsStyleFileSaverPage from "./components/export-excel/xlsxjsstyle-filesaver";
 import ExcelJsFileSaverPage from "./components/export-excel/exceljs-filesaver";
+import PdfPage from "./components/pdf";
+import ReactPdfPage from "./components/pdf/react-pdf";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -93,6 +95,7 @@ function App() {
               path="/embla-carousel/parallex"
               element={<EmblaCarouselParallex />}
             />
+
             <Route path="/img" element={<ImagePage />} />
             <Route path="/img/pinch-zoom" element={<ImagePinchZoomPage />} />
             <Route path="/export-excel" element={<ExportExcelPage />} />
@@ -104,6 +107,9 @@ function App() {
               path="/export-excel/exceljs-filesaver"
               element={<ExcelJsFileSaverPage />}
             />
+
+            <Route path="/pdf" element={<PdfPage />} />
+            <Route path="/pdf/react-pdf" element={<ReactPdfPage />} />
           </Routes>
         </BrowserRouter>
       </AppContainer>

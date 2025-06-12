@@ -79,6 +79,11 @@ const Root = () => {
             export-excel
           </button>
         </li>
+        <li>
+          <button className="button-default" onClick={() => navigate("/pdf")}>
+            PDF
+          </button>
+        </li>
       </RootList>
     </CommonContainer>
   );
