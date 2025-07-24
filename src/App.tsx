@@ -33,6 +33,9 @@ import XlsxJsStyleFileSaverPage from "./components/export-excel/xlsxjsstyle-file
 import ExcelJsFileSaverPage from "./components/export-excel/exceljs-filesaver";
 import PdfPage from "./components/pdf";
 import ReactPdfPage from "./components/pdf/react-pdf";
+import DatePickerPage from "./components/date-picker";
+import DayPickerCustomInput from "./components/date-picker/react-day-picker/day-picker-custom-input";
+import ReactDayPickerPage from "./components/date-picker/react-day-picker";
 
 const AppContainer = styled.main`
   width: 100dvw;
@@ -110,6 +113,16 @@ function App() {
 
             <Route path="/pdf" element={<PdfPage />} />
             <Route path="/pdf/react-pdf" element={<ReactPdfPage />} />
+
+            <Route path="/date-picker" element={<DatePickerPage />} />
+            <Route
+              path="/day-picker/react-day-picker"
+              element={<ReactDayPickerPage />}
+            />
+            <Route
+              path="/day-picker/react-day-picker/custom-input"
+              element={<DayPickerCustomInput />}
+            />
           </Routes>
         </BrowserRouter>
       </AppContainer>

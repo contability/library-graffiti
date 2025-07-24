@@ -84,6 +84,14 @@ const Root = () => {
             PDF
           </button>
         </li>
+        <li>
+          <button
+            className="button-default"
+            onClick={() => navigate("/date-picker")}
+          >
+            date-picker
+          </button>
+        </li>
       </RootList>
     </CommonContainer>
   );
